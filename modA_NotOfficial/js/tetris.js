@@ -50,22 +50,28 @@ class Circle {
     }
 
     update() {
-        context.clearRect(0, 0, windowWidth, windowHeight)
+        
         this.draw(context);
 
-        if((this.xpos + this.radius) > windowWidth){
+        if ((this.xpos + this.radius) > windowWidth) {
             this.dx = -this.dx;
-        }
-        if((this.xpos - this.radius) < 0){
-            this.dx = -this.dx;
+            this.draw(context)
         }
 
-        if((this.ypos - this.radius) < 0){
+        if ((this.xpos - this.radius) < 0) {
+            this.dx = -this.dx;
+
+            this.draw(context)
+        }
+
+        if ((this.ypos - this.radius) < 0) {
             this.dy = -this.dy;
+            this.draw(context)
         }
 
-        if((this.ypos + this.radius) > windowHeight){
+        if ((this.ypos + this.radius) > windowHeight) {
             this.dy = -this.dy
+            this.draw(context)
         }
 
         this.xpos += this.dx;
@@ -80,16 +86,20 @@ let allCircles = []
 
 let randomX = Math.random() * windowHeight
 let randomY = Math.random() * windowWidth
-let myCircle = new Circle(randomX, randomY, 50, "black", circleCounter, 6)
+let myCircle = new Circle(100, 100, 50, "black", circleCounter++, 3)
+let myCircle2 = new Circle(70, 300, 50, "black", circleCounter++, 3)
 
-myCircle.draw(context);
 
-let updateCircle = function(){    
-    
+let updateCircle = function () {
+
     context.clearRect(0, 0, windowWidth, windowHeight)
-    requestAnimationFrame(updateCircle);
 
-    myCircle.update();
+    myCircle.update()
+
+    myCircle2.update()
+    
+
+    requestAnimationFrame(updateCircle);
 
 }
 
