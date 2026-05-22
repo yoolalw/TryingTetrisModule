@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        @keyframes progress-animation {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .animate-progress {
+            animation: progress-animation 3s forwards;
+        }
+    </style>
+    <title>Tetris</title>
+</head>
+
+<body>
+
+    <div class="containerPrinc flex flex-col h-screen justify-center align-middle items-center">
+        <img src="img/Untitled design.png" class="flex  w-[600px] h-[700px]">
+        <div class="flex h-screen justify-center items-center">
+            <div class="loadBarContainer fixed w-[800px] h-8 bg-zinc-200 overflow-hidden rounded-full">
+                <div class="bar h-full bg-pink-900 animate-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "homepage.html"
+        }, 3000)
+    </script>
+
+</body>
+
+</html>
