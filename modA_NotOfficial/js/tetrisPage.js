@@ -37,6 +37,11 @@ function drawGrid(lineWidth, cellWidth, cellHeight, color, speed) {
         }
     }
 
+}
+drawGrid(2, 80, 60, "black")
+
+function drawPeca1(posY) {
+    
     let peca1 = [
         { id: "1", width: cellWidth, height: cellHeight, color: "blue", speed: 1 }
     ];
@@ -51,7 +56,4 @@ function drawGrid(lineWidth, cellWidth, cellHeight, color, speed) {
     }
 
 }
-
-
-drawGrid(2, 80, 60, "black")
-
+drawPeca1(0)
