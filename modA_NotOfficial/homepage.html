@@ -9,23 +9,57 @@
     <title>Tetris</title>
 </head>
 
-<body class="bg-black">
+<body class="bg-[#ababab]">
 
-    <img src="img/tetris-multicolored-pattern-4u7ed6koskqhcez1.webp" class="h-screen w-screen opacity-50">
-    <div class="homeLog flex align-middle justify-center items-center">
-        <div class="container z-1 mt-[-950px] bg-[#BE0C62] w-350 h-200 opacity-90">
-            <div class="boxInput mt-10 ml-10">
-                <label for="username" class="text-[40px] text-[#8CFF00] font-bold ml-10">Insira seu nome de usuário</label>
-                <div class="box1 ml-10 bg-[#00FF00] w-[510px] h-[130px] z-1">
-                    <input type="text" class="text-[40px] text-[#860041] text-center align-middle w-[480px] h-[130px]" >
-                    <div class="box2 bg-[#00FF00] w-[180px] h-[130px]"></div>
-                </div>
+    <div class="upbar relative bg-[#dedede]  z-4 w-full text-center align-middle h-30 shadow-xl">
+        <h1 class="flex items-center justify-center h-full text-center m-auto text-[50px] font-bold text-[#ff0089] ">
+            TETRIS</h1>
+    </div>
 
-            </div>
+    <div class="msg justify-center flex items-center m-auto">
+        <h2 id="message" class="absolute mt-30 items-center text-center bg-white text-[30px] justify-center items-center text-black font-bold rounded-xl "></h2>
+    </div>
+    <img src="img/360_F_399503722_wW2pL8G3Hy7LcXhxxoYxOvtVaF48n8EZ.jpg"
+        class="flex h-full w-full mt-[-450px] z-1 opacity-60">
+
+    <div class="buttons fixed flex-col z-5 mt-[-800px]">
+        <div class="box flex flex-col mt-30 ml-100">
+            <label class="font-bold mb-5 text-[24px]">Insira seu nome de usuário</label>
+            <input id="username" type="text" placeholder="     User@1234"
+                class=" flex justify-center items-center h-20 w-100 bg-[#00b7ff] shadow-xl">
         </div>
+        <a href="tetris.html">
+            <div class="box flex flex-col mt-15 ml-100">
+                <button id="btnPlay" type="button"
+                    class="h-30 w-100 bg-[#ff2d95] hover:bg-[#a10057] text-[#fff2f9] font-bold text-[40px] shadow-xl cursor-pointer ">INICIAR</button>
+            </div>
+        </a>
+        <a href="ranking.html">
+            <div class="box flex flex-col mt-15 ml-100">
+                <button type="button"
+                    class="h-25 w-100 bg-[#b026ff] hover:bg-[#73018a] text-[#fff2f9] font-bold text-[40px] shadow-xl cursor-pointer">RANKING</button>
+            </div>
+        </a>
+
+        <div class="imgSide relative h-full">
+            <img src="img/Untitled design.png" class="relative h-full ml-250 bottom-150">
+        </div>
+
+    </div>
+    <script>
+
+        const msg = document.getElementById("message")
+        const btnPlay = document.getElementById("btnPlay").addEventListener("click", (e) => {
+            e.preventDefault()
+            if (document.getElementById("username").value == "") {
+                msg.textContent = "⚠️Campo de nome de usuário vazio!"
+            }
+            window.location.href = "tetris.html"
+        })
+
+
+    </script>
 
 </body>
 
 </html>
-
-
