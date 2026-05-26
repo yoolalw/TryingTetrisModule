@@ -22,20 +22,20 @@ const height = ctx.height
 function grid(lineWidth, cellWidth, cellHeight, color){
     ctx.strokeStyle = color
     ctx.lineWidth = lineWidth
-    for(x=0;x<width;x++){
+    for(x=0;x<=width;x += cellWidth){
         ctx.beginPath()
-        ctx.lineTo(x, 0)
-        ctx.moveTo(x, width)
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, height)
         ctx.stroke()
-        for(y=0;y<height;y++){
+        for(y=0;y<=height;y += cellHeight){
             ctx.beginPath()
-            ctx.lineTo(0, y)
-            ctx.moveTo(height, y)
+            ctx.moveTo(0, y)
+            ctx.lineTo(width, y)
+            ctx.stroke()
         }
-    
     }
-
 }
+grid(2, 80, 60, "#333")
 
 const pecas = [
     { x: 100, y: 0, w: 60, h: 30, cor: 'cyan', vel: 2 },
@@ -50,6 +50,8 @@ document.addEventListener('keydown', e => {
 
 function draw() {
     ctx.clearRect(0, 0, 300, 600)
+
+    grid(2, 80, 60, "#333")
 
     pecas.forEach(p => {
         p.y += p.vel
