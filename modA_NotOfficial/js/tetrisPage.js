@@ -9,120 +9,57 @@ const intervalo = setInterval(() => {
     }
     else if (tempoRest == 0) {
         contReg.textContent = ""
-        tetris()
-        return
+
     }
 
 }, 1000)
 
+const ctx = document.getElementById('c').getContext('2d')
 
-let myCanvas = document.querySelector("#canvas");
-let context = myCanvas.getContext("2d");
+const width = ctx.width
+const height = ctx.height
 
-function drawGrid(lineWidth, cellWidth, cellHeight, color) {
-    context.strokeStyle = color;
-    context.lineWidth = lineWidth;
-
-    let width = myCanvas.width;
-    let height = myCanvas.height;
-
-
-    for (let x = 0; x <= width; x += cellWidth) {
-        context.beginPath()
-        context.moveTo(x, 0);
-        context.lineTo(x, height);
-        context.stroke()
-
-        for (let y = 0; y <= height; y += cellHeight) {
-            context.beginPath()
-            context.moveTo(0, y)
-            context.lineTo(width, y)
-            context.stroke()
-
+function grid(lineWidth, cellWidth, cellHeight, color){
+    ctx.strokeStyle = color
+    ctx.lineWidth = lineWidth
+    for(x=0;x<width;x++){
+        ctx.beginPath()
+        ctx.lineTo(x, 0)
+        ctx.moveTo(x, width)
+        ctx.stroke()
+        for(y=0;y<height;y++){
+            ctx.beginPath()
+            ctx.lineTo(0, y)
+            ctx.moveTo(height, y)
         }
+    
     }
+
 }
-drawGrid(2, 80, 60, "#333333")
 
-function tetris() {
+const pecas = [
+    { x: 100, y: 0, w: 60, h: 30, cor: 'cyan', vel: 2 },
+    { x: 200, y: 0, w: 30, h: 60, cor: 'orange', vel: 3 }
+]
 
-    const cellW = 60
-    const cellH = 80
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') pecas[0].x -= 20
+    if (e.key === 'ArrowRight') pecas[0].x += 20
+    if (e.key === 'ArrowUp') pecas[0].y += 100
+})
 
-    function drawPeca(x, y, height, width, color) {
+function draw() {
+    ctx.clearRect(0, 0, 300, 600)
 
-        context.fillStyle = color
-        context.fillRect(x, y, height, width)
+    pecas.forEach(p => {
+        p.y += p.vel
+        if (p.y + p.h > 600) p.y = 0
 
-    }
-
-    const pecas = [
-        {
-            x: 0,
-            y: 0,
-            width: cellH * 3,
-            height: cellW,
-            speed: 0.5,
-            color: "#A2DED0"
-        },
-        {
-            x: 100,
-            y: 0,
-            width: cellH,
-            height: cellW * 3,
-            speed: 0.5,
-            color: "#333"
-        }
-    ]
-
-
-    document.addEventListener("keydown", function (e) {
-        pecas.forEach(p => {
-
-            if (e.key === 'w') {
-                p.speed += 0.1
-            } else if
-                (e.key === 'a') {
-                if (p.x > 0) p.x -= p.speed
-
-            } else if
-                (e.key === 'd') {
-                if (p.x + p.width < myCanvas.width) p.x += p.speed
-            }
-        })
+        ctx.fillStyle = p.cor
+        ctx.fillRect(p.x, p.y, p.w, p.h)
     })
 
-    function spawnPeca() {
-        const tipo = pecas[Math.floor(Math.random() * pecas.length)]
-        return { 
-            x: Math.floor(Math.random() * myCanvas.width - tipo.width),
-            y:0, 
-            width: tipo.width,
-            height: tipo.height,
-            speed: 0.5,
-            color: tipo.color
-        }
-    } 
-    const spawn = [spawnPeca()]
+    requestAnimationFrame(draw)
+}
 
-    console.log("a")
-    function anim() {
-        context.clearRect(0, 0, myCanvas.width, myCanvas.height);
-        context.fillStyle = "blue"
-
-
-        drawGrid(2, 80, 60, "#333333")
-
-        pecas.forEach((p) => {
-            drawPeca(p.x, p.y, p.width, p.height, p.color)
-            if (p.y + p.height < myCanvas.height) { 
-                p.y += p.speed 
-            } else {
-                pecas[i] = spawnPeca() }   
-
-        })
-
-        requestAnimationFrame(anim)
-    }
-    anim()
-} 
+draw()
