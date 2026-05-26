@@ -13,54 +13,53 @@ const intervalo = setInterval(() => {
     }
 
 }, 1000)
+const canvas = document.getElementById('c')
+const ctx = canvas.getContext("2d")
 
-const ctx = document.getElementById('c').getContext('2d')
 
-const width = ctx.width
-const height = ctx.height
+let width = ctx.canvas.width
+let height = ctx.canvas.height
 
-function grid(lineWidth, cellWidth, cellHeight, color){
+
+function grid(lineWidth, cellWidth, cellHeight, color) {
     ctx.strokeStyle = color
     ctx.lineWidth = lineWidth
-    for(x=0;x<=width;x += cellWidth){
+    for (let x = 0; x <= width; x += cellWidth) {
         ctx.beginPath()
         ctx.moveTo(x, 0)
         ctx.lineTo(x, height)
         ctx.stroke()
-        for(y=0;y<=height;y += cellHeight){
-            ctx.beginPath()
-            ctx.moveTo(0, y)
-            ctx.lineTo(width, y)
-            ctx.stroke()
-        }
+    } for (let y = 0; y <= height; y += cellHeight) {
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(width, y)
+        ctx.stroke()
+
     }
 }
-grid(2, 80, 60, "#333")
 
 const pecas = [
-    { x: 100, y: 0, w: 60, h: 30, cor: 'cyan', vel: 2 },
-    { x: 200, y: 0, w: 30, h: 60, cor: 'orange', vel: 3 }
+    { x: 1, y: 0, w: 150, h: 60, cor: '#AED6F1', vel: 15 },
+    { x: 200, y: 0, w: 150, h: 60, cor: '#A2DED0', vel: 15 },
+    { x: 150, y: 0, w: 75, h: 180, cor: '#333', vel: 15 }
 ]
 
 document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') pecas[0].x -= 20
     if (e.key === 'ArrowRight') pecas[0].x += 20
-    if (e.key === 'ArrowUp') pecas[0].y += 100
+    if (e.key === 'ArrowUp') pecas[0].y += 1
 })
 
 function draw() {
-    ctx.clearRect(0, 0, 300, 600)
-
-    grid(2, 80, 60, "#333")
+    ctx.clearRect(0, 0, width, height)
+    grid(3, 75, 60, "#333")
 
     pecas.forEach(p => {
-        p.y += p.vel
-        if (p.y + p.h > 600) p.y = 0
-
+        if (p.y + p.h < height) p.y += p.vel
+        if(p.y + p.h < p.h) p.y -= p.vel
         ctx.fillStyle = p.cor
         ctx.fillRect(p.x, p.y, p.w, p.h)
     })
-
     requestAnimationFrame(draw)
 }
 
