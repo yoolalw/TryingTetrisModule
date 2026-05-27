@@ -1,7 +1,6 @@
 //cria um bloco especifico com base nas coordenadas dele
 
 
-
 class Block {
     constructor(x, y, color) {
         this.x = x
@@ -37,8 +36,8 @@ class Mov {
             case 1:
                 blocks = [new Block(-1, 0), new Block(0, 0), new Block(0, -1), new Block(1, -1)]
                 break;
-                      
-            case 2:     
+
+            case 2:
                 blocks = [new Block(0, 1), new Block(1, 0), new Block(0, 1), new Block(1, 1), new Block(-1, 1)];
                 break;
         }
@@ -182,24 +181,25 @@ class Game {
 
         this.fc++;
 
-    
+
     }
 
 }
 let game;
 
-function keyPressed(){
-    if(keyCode === 65) game.movVx = -1
-    if(keyCode === 68) game.movVx = 1
-    if(keyCode === 83) game.movDrop = true
+function keyPressed() {
+    if (keyCode === 65) game.movVx = -1
+    if (keyCode === 68) game.movVx = 1
+    if (keyCode === 83) game.movDrop = true
 }
 
-function setup(){
+function setup() {
     createCanvas(300, 550);
     game = new Game()
 }
-function draw(){
+function draw() {
     game.proc()
 }
+
 
 
