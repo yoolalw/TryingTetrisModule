@@ -1,66 +1,123 @@
-let contReg = document.getElementById("contReg")
-let tempoRest = 4
+//cria um bloco especifico com base nas coordenadas dele
 
-const intervalo = setInterval(() => {
-    tempoRest--;
-
-    if (tempoRest > 0) {
-        contReg.textContent = tempoRest
-    }
-    else if (tempoRest == 0) {
-        contReg.textContent = ""
-
+class Block {
+    constructor(x, y, color) {
+        this.x = x
+        this.y = y
+        this.color = color
     }
 
-}, 1000)
-const canvas = document.getElementById('c')
-const ctx = canvas.getContext("2d")
+    draw() {
+        push()
+        let s = width / 12
+        rect(s * this.x, s * this.y, s)
+        pop()
+    }
+
+}
+
+//é a movimentacao que fica de acordo com a coordenada e o tamanho da peça
+//sendo criados passando as coordenadas, num switch case, sendo reconhecido tambem como o shape da peça;
+
+class Mov {
+    constructor(x, y, shape) {
+        this.x = x
+        this.y = y
+        this.shape = shape
+    }
 
 
-let width = ctx.canvas.width
-let height = ctx.canvas.height
+    //funcao de criar repetidamente os blocos passando as coordenadas.
 
+    creatBlocks() {
+        let blocks = []
+        switch (this.shape) {
+            case 1:
+                blocks = new Block(-1, 0), new Block(0, 0), new Block(0, -1), new Block(1, -1);
+                break;
 
-function grid(lineWidth, cellWidth, cellHeight, color) {
-    ctx.strokeStyle = color
-    ctx.lineWidth = lineWidth
-    for (let x = 0; x <= width; x += cellWidth) {
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, height)
-        ctx.stroke()
-    } for (let y = 0; y <= height; y += cellHeight) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(width, y)
-        ctx.stroke()
+            case 2:
+                blocks = new Block(0, 1), new Block(1, 1), new Block(0, 1), new Block(0, -1);
+                break;
+        }
 
+        // adiciona a movimentacao "somando" e mapeando pra baixo sempre.
+
+        blocks = blocks.map(b =>
+            new Block(b.x + this.x, b.y + this.y)
+        )
+        return blocks;
+    }
+
+    //"desenha" a peca na tela, ent "redesenha" a funcao novamente
+    //passa um let blocks com a funcao especifica, um for por cima dos blocos
+    //e a cada bloco encontrado ele passa um b.draw()
+    draw() {
+        let blocks = this.creatBlocks();
+        for (let b of blocks) {
+            b.draw()
+        }
+    }
+
+    //recria varias peças.
+    copy() {
+        return new Mino(this.x, this.y, this.color, this.shape);
     }
 }
 
-const pecas = [
-    { x: 1, y: 0, w: 150, h: 60, cor: '#AED6F1', vel: 15 },
-    { x: 200, y: 0, w: 150, h: 60, cor: '#A2DED0', vel: 15 },
-    { x: 150, y: 0, w: 75, h: 180, cor: '#333', vel: 15 }
-]
+class Field {
 
-document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft') pecas[0].x -= 20
-    if (e.key === 'ArrowRight') pecas[0].x += 20
-    if (e.key === 'ArrowUp') pecas[0].y += 1
-})
+    constructor() {
+        this.tiles = [
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0]
+            [1, 1, 1, 1, 1, 1]
+        ]
+    }
 
-function draw() {
-    ctx.clearRect(0, 0, width, height)
-    grid(3, 75, 60, "#333")
 
-    pecas.forEach(p => {
-        if (p.y + p.h < height) p.y += p.vel
-        if(p.y + p.h < p.h) p.y -= p.vel
-        ctx.fillStyle = p.cor
-        ctx.fillRect(p.x, p.y, p.w, p.h)
-    })
-    requestAnimationFrame(draw)
+    //faz a verificacao onde se x e y forem menor, vai retornar 1 a cada mov
+    tileAt(x, y){ 
+        if(x<0 || x>=6 || y<0 || y>=10) return 1;
+        return this.tiles[y][x]; 
+    }
+    //continua o loop verificando sempre os proximos tiles, tileAt add e putBlock verifica
+    putBlock(x, y){
+        this.tiles[y][x];
+    }
+
+    //encontra uma linha e se ela tiver igual a y, ela avanca ate encontrar uma linha igual a 1    
+    findLineFilled(){
+        for(let y=0; y<10; y++){
+            let isFilled = this.tiles[y].every(t=>
+                y===1);
+
+            if(isFilled) return y;
+        }
+        return -1;
+    }
+    
+    cutLine(y){
+        this.tiles.splice(y, 1);   
+        this.tiles.unshift([0, 0, 0, 0, 0, 0]);
+    }
+    draw(){
+        for(let y=0; y<10; y++){
+            for(let x=0; x<12; x++){
+                if(this.tileAt(x, y) === 0) continue;
+                new Block(x, y).draw();
+            }
+        }
+    }
+
 }
 
-draw()
+
