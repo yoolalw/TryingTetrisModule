@@ -10,7 +10,7 @@ class Block {
     draw() {
         push()
         let s = width / 12
-        rect(s * this.x, s * this.y, s)
+        rect(s * this.x, s * this.y, s, s)
         pop()
     }
 
@@ -33,11 +33,11 @@ class Mov {
         let blocks = []
         switch (this.shape) {
             case 1:
-                blocks = new Block(-1, 0), new Block(0, 0), new Block(0, -1), new Block(1, -1);
+                blocks = [new Block(-1, 0), new Block(0, 0), new Block(0, -1), new Block(1, -1)]
                 break;
 
             case 2:
-                blocks = new Block(0, 1), new Block(1, 1), new Block(0, 1), new Block(0, -1);
+                blocks = [new Block(0, 1), new Block(1, 1), new Block(0, 1), new Block(0, -1)];
                 break;
         }
 
@@ -61,7 +61,7 @@ class Mov {
 
     //recria varias peças.
     copy() {
-        return new Mino(this.x, this.y, this.color, this.shape);
+        return new Mov(this.x, this.y, this.color, this.shape);
     }
 }
 
@@ -69,55 +69,68 @@ class Field {
 
     constructor() {
         this.tiles = [
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
-            [0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1]
         ]
     }
 
 
     //faz a verificacao onde se x e y forem menor, vai retornar 1 a cada mov
-    tileAt(x, y){ 
-        if(x<0 || x>=6 || y<0 || y>=10) return 1;
-        return this.tiles[y][x]; 
+    tileAt(x, y) {
+        if (x < 0 || x >= 6 || y < 0 || y >= 10) return 1;
+        return this.tiles[y][x];
     }
-    //continua o loop verificando sempre os proximos tiles, tileAt add e putBlock verifica
-    putBlock(x, y){
-        this.tiles[y][x];
+    //fixa o bloco no campo
+    putBlock(x, y) {
+        this.tiles[y][x] = 1;
     }
 
     //encontra uma linha e se ela tiver igual a y, ela avanca ate encontrar uma linha igual a 1    
-    findLineFilled(){
-        for(let y=0; y<10; y++){
-            let isFilled = this.tiles[y].every(t=>
-                y===1);
+    findLineFilled() {
+        for (let y = 0; y < 10; y++) {
+            let isFilled = this.tiles[y].every(t =>
+                t === 1);
 
-            if(isFilled) return y;
+            if (isFilled) return y;
         }
         return -1;
     }
-    
-    cutLine(y){
-        this.tiles.splice(y, 1);   
+
+    cutLine(y) {
+        this.tiles.splice(y, 1);
         this.tiles.unshift([0, 0, 0, 0, 0, 0]);
     }
-    draw(){
-        for(let y=0; y<10; y++){
-            for(let x=0; x<12; x++){
-                if(this.tileAt(x, y) === 0) continue;
+    draw() {
+        for (let y = 0; y < 10; y++) {
+            for (let x = 0; x < 6; x++) {
+                if (this.tileAt(x, y) === 0) continue;
                 new Block(x, y).draw();
             }
         }
     }
 
+}
+class Game {
+    constructor() {
+        this.mino = Game.makeMino()
+        this.minoVx = 0;
+        this.minoDrop = false;
+        this.minoVr = 0;
+        this.field = new Field()
+        this.fc = 0;
+    }
+    static makeMino(){
+        return new Mino(5,2,0, floor(random(0,1)))
+    }
 }
 
 
