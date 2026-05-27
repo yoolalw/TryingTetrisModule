@@ -194,7 +194,7 @@ function keyPressed() {
 }
 
 function setup() {
-    createCanvas(300, 550);
+    let canvas = createCanvas(300, 550);
     game = new Game()
 }
 function draw() {
