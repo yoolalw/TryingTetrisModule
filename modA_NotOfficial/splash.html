@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes progress-animate {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .animate-progress {
+            animation: progress-animate 3s forwards
+        }
+        
+    </style>
+    <title>BrainTetris</title>
+</head>
+
+<body class="bg-[#F7F7F7]">
+
+
+    <div class="head align-center justify-center flex m-auto ">
+        <img src="img/icon.png">
+    </div>
+    <div class="barcentr flex items-center align-center justify-center m-auto">
+        <div class="over flex w-[300px] h-7 overflow-hidden bg-[#AED6F1]">
+            <div class="bar h-full bg-[#333] animate-progress"></div>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "newHome.html"
+        }, 3000)
+    </script>
+</body>
+
+</html>
